@@ -30,6 +30,7 @@ const Crud = () => {
   const [title, setTitle] = useState(null);
   const [values, setValues] = useState();
   const [data, setData] = useState([]);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const handleSetValues = (value) => {
     setValues((prevValue) => ({
@@ -56,8 +57,11 @@ const Crud = () => {
       okType: "danger",
       cancelText: "Não",
       onOk() {
-        deleteUser();
-        console.log("OK");
+        return new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          deleteUser();
+          console.log("OK");
+        });
       },
       onCancel() {
         console.log("Cancel");
@@ -66,6 +70,7 @@ const Crud = () => {
   };
 
   const createUser = () => {
+    setConfirmLoading(true);
     ApiCrud.post("/create", values)
       .then((res) => {
         console.log(res);
@@ -75,6 +80,10 @@ const Crud = () => {
           "Cadastrar usuario",
           "Usuario cadastrado com sucesso!"
         );
+        setTimeout(() => {
+          setOpen(false);
+          setConfirmLoading(false);
+        }, 1000);
         fetchApi();
       })
       .catch((err) => {
@@ -90,11 +99,15 @@ const Crud = () => {
 
   const fetchApi = async () => {
     setLoading(true);
+    setConfirmLoading(true);
     try {
       const response = await ApiCrud.get("/read");
       const userData = response.data;
       setData(userData.reverse());
-      setLoading(false);
+      setTimeout(() => {
+        setConfirmLoading(false);
+        setLoading(false);
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
@@ -102,6 +115,7 @@ const Crud = () => {
 
   const editUser = () => {
     console.log(values);
+    setConfirmLoading(true);
     ApiCrud.patch(`/read/${editId._id}`, values)
       .then((res) => {
         console.log(res);
@@ -111,6 +125,12 @@ const Crud = () => {
           "Editar usuario",
           "Usuario editado com sucesso!"
         );
+
+        setTimeout(() => {
+          setOpenEdit(false);
+          setConfirmLoading(false);
+        }, 1000);
+
         fetchApi();
       })
       .catch((err) => {
@@ -125,6 +145,7 @@ const Crud = () => {
   };
 
   const deleteUser = () => {
+    setConfirmLoading(true);
     ApiCrud.delete(`/read/${delId}`)
       .then((res) => {
         console.log(delId);
@@ -135,6 +156,10 @@ const Crud = () => {
           "Excluir usuario",
           "Usuario apagado com sucesso!"
         );
+        setTimeout(() => {
+          setOpenEdit(false);
+          setConfirmLoading(false);
+        }, 1000);
         fetchApi();
       })
       .catch((err) => {
@@ -226,12 +251,11 @@ const Crud = () => {
 
             <Modal
               title={title}
-              centered
               open={openEdit}
               onOk={() => {
                 editUser();
-                setOpenEdit(false);
               }}
+              confirmLoading={confirmLoading}
               onCancel={() => setOpenEdit(false)}
               width={1000}
               okText="Atualizar"
@@ -240,7 +264,7 @@ const Crud = () => {
               }}
             >
               <Card
-                className="card"
+                className=""
                 key={""}
                 style={{ width: "100%", marginTop: 16, marginBottom: 30 }}
               >
@@ -313,15 +337,14 @@ const Crud = () => {
 
             <Modal
               title={title}
-              centered
               open={open}
               onOk={() => {
                 createUser();
-                setOpen(false);
               }}
               onCancel={() => setOpen(false)}
               width={1000}
-              okText="Enviar"
+              confirmLoading={confirmLoading}
+              okText="Cadastrar"
               style={{
                 top: 0,
               }}

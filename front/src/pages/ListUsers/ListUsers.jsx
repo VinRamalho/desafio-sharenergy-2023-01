@@ -3,16 +3,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from "react";
 import "./ListUsers.css";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  CalendarOutlined,
-} from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import {
   Avatar,
   Card,
   Skeleton,
-  Calendar,
   Modal,
   Row,
   Col,
@@ -34,6 +29,14 @@ const ListUsers = () => {
   const [search, setSearch] = useState([]);
   const [paginationNumber, setpaginationNumber] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [values, setValues] = useState({
+    picture: { thumbnail: "" },
+    login: { username: "" },
+    name: { last: "", fisrt: "" },
+    location: { city: "" },
+    dob: { age: "" },
+  });
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -56,10 +59,6 @@ const ListUsers = () => {
     } catch (error) {
       return error;
     }
-  };
-
-  const onPanelChange = (value, mode) => {
-    console.log(value.format("DD-MM-YYYY"), mode);
   };
 
   const filterFetch = async (event) => {
@@ -170,12 +169,14 @@ const ListUsers = () => {
                   key={i}
                   style={{ width: 550, marginTop: 16 }}
                   actions={[
-                    <CalendarOutlined
-                      key="CalendarOutlined"
-                      onClick={showModal}
+                    <InfoCircleOutlined
+                      key="infoCircleOutlined"
+                      onClick={() => {
+                        console.log(user);
+                        setValues(user);
+                        showModal();
+                      }}
                     />,
-                    <EditOutlined key="edit" />,
-                    <EllipsisOutlined key="ellipsis" />,
                   ]}
                 >
                   <Skeleton
@@ -205,6 +206,7 @@ const ListUsers = () => {
               </>
             );
           })}
+
           <Pagination
             className="pagination"
             defaultCurrent={1}
@@ -213,19 +215,46 @@ const ListUsers = () => {
               paginationChange(e);
             }}
           />
+
           <Modal
-            title="Agenda"
+            style={{ padding: 0 }}
+            width={1000}
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
+            footer={() => {
+              return { footer: null };
+            }}
           >
-            <Calendar
-              locale="pt-BR"
-              className="site-calendar-demo-card"
-              // style={{ width: 550 }}
-              fullscreen={false}
-              onPanelChange={onPanelChange}
-            />
+            <Card
+              className=""
+              key={""}
+              style={{ width: "100%", marginTop: 16 }}
+            >
+              <Skeleton
+                loading={loading}
+                size="small"
+                avatar
+                active
+                paragraph={{
+                  rows: 3,
+                }}
+              >
+                <div className="avatar-group">
+                  <Avatar shape="circle" src={values.picture.thumbnail} />
+                  <p>
+                    <b>{values.login.username}</b>
+                  </p>
+                </div>
+
+                <p>
+                  Nome: {values.name.first} {values.name.last}
+                </p>
+                <p> Email: {values.email}</p>
+                <p>Cidade: {values.location.city}</p>
+                <p>Idade: {values.dob.age}</p>
+              </Skeleton>
+            </Card>
           </Modal>
         </div>
       </Col>
