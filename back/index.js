@@ -22,11 +22,9 @@ app.use('/api/read', personRutes)
 
 
 // // conexao mongo
-// const DB_USER = process.env.DB_USER
-// const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = process.env.DB_PASSWORD
 
-const DB_USER = "root"
-const DB_PASSWORD = "root"
 
 
 mongoose

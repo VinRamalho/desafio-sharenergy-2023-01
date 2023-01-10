@@ -82,7 +82,7 @@ const MenuHeader = () => {
       </Button>
       <Menu
         className="fix"
-        defaultSelectedKeys={["1"]}
+        // defaultSelectedKeys={["1"]}
         mode="inline"
         theme="dark"
         inlineCollapsed={collapsed}

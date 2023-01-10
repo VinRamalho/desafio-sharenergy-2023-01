@@ -86,31 +86,6 @@ router.patch('/:id', async (req, res) => {
 
     const { name, email, phone, address, cpf } = req.body
 
-    if (!name) {
-        res.status(422).json({ error: 'nome é obrigatório' })
-        return
-    }
-
-    if (!email) {
-        res.status(422).json({ error: 'email é obrigatório' })
-        return
-    }
-
-    if (!phone) {
-        res.status(422).json({ error: 'telefone é obrigatório' })
-        return
-    }
-
-    if (!address) {
-        res.status(422).json({ error: 'endereco é obrigatório' })
-        return
-    }
-
-    if (!cpf) {
-        res.status(422).json({ error: 'CPF é obrigatório' })
-        return
-    }
-
     const person = {
         name,
         email,
