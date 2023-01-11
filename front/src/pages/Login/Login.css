@@ -1,0 +1,16 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-h1 {
+  color: #001529;
+  display: flex;
+  justify-content: center;
+}
+
+.buttom-login {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
