@@ -7,7 +7,6 @@ const StatusCat = () => {
   const [inputNumber, setInputNumber] = useState(202);
 
   const onChange = (value) => {
-    console.log("changed", value);
     setInputNumber(value);
   };
   return (

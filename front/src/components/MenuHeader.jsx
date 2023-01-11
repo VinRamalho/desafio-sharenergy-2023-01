@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../Contexs/auth";
 import {
   SmileOutlined,
   GlobalOutlined,
@@ -7,6 +8,7 @@ import {
   MenuUnfoldOutlined,
   HomeOutlined,
   TeamOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import "./MenuHeader.css";
@@ -49,13 +51,25 @@ const items = [
       <TeamOutlined />
     </Link>
   ),
+  getItem(
+    "sair",
+    "5",
+
+    <Link to="/login">
+      <LogoutOutlined />
+    </Link>
+  ),
 ];
 
 const MenuHeader = () => {
+  const { logout } = useContext(AuthContext);
+
   const [collapsed, setCollapsed] = useState(false);
 
   const onClick = (e) => {
-    console.log(e);
+    if (e.key === "5") {
+      logout();
+    }
   };
 
   const toggleCollapsed = () => {
