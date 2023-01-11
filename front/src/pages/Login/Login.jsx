@@ -13,7 +13,7 @@ const Login = () => {
     loginPage(values.username, values.password, values.remember);
   };
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // console.log("Failed:", errorInfo);
   };
 
   useEffect(() => {
