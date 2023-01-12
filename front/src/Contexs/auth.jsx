@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const loginPage = async (login, password, remember) => {
     const response = await createSession(login, password);
 
-    console.log("login", response.data);
+    // console.log("login", response.data);
 
     const userLogad = response.data.user;
     const token = response.data.token;
